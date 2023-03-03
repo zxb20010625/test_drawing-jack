@@ -4,6 +4,7 @@
     <script src="docs-demo-timeline.js"></script>
     <script src="https://unpkg.com/jspsych@7.1.2"></script>
     <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-survey-text@1.1.0"></script>
     <script src="https://unpkg.com/@jspsych/plugin-sketchpad@1.0.1"></script>
     <link rel="stylesheet" href="https://unpkg.com/jspsych@7.1.2/css/jspsych.css" />
     <link rel="stylesheet" href="docs-demo.css" type="text/css">
@@ -16,23 +17,20 @@
 
     const trial = {
       type: jsPsychSketchpad,
-      prompt: '<p>Circle the mouth using red. Circle the eyes using blue.</p>',
-      prompt_location: 'abovecanvas',
-      stroke_color_palette: ['red', 'blue'],
-      stroke_color: 'red',
+      prompt: '<p>Draw the first animal that comes to mind. You have 30 seconds!</p>',
+      prompt_location: 'belowcanvas',
       background_image: 'img/sad_face_4.jpg',
-      canvas_width: 380,
-      canvas_height: 252,
+      trial_duration: 30000,
       show_countdown_trial_duration: true,
       on_finish: function(data){
-        const filename = `data.webm`;
+        const filename = `test.webm`;
         jsPsychPipe.saveBase64Data("TMRcI8mkBDbz", filename, data.png);
         // delete the base64 data to save space. store the filename instead.
         data.png = filename;
       }
     };
     
-    const timeline = [trial];
+    const timeline = [trial]
 
     if (typeof jsPsych !== "undefined") {
       jsPsych.run(generateDocsDemoTimeline(timeline));
