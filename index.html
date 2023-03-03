@@ -21,8 +21,15 @@
       stroke_color: 'red',
       background_image: 'img/sad_face_4.jpg',
       canvas_width: 380,
-      canvas_height: 252
-    }
+      canvas_height: 252,
+      show_countdown_trial_duration: true,
+      on_finish: function(data){
+        const filename = `data.webm`;
+        jsPsychPipe.saveBase64Data("TMRcI8mkBDbz", filename, data.png);
+        // delete the base64 data to save space. store the filename instead.
+        data.png = filename;
+      }
+    };
     
     const timeline = [trial];
 
