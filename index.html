@@ -9,12 +9,36 @@
     <link rel="stylesheet" href="https://unpkg.com/jspsych@7.1.2/css/jspsych.css" />
     <link rel="stylesheet" href="docs-demo.css" type="text/css">
     <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script>
+    <script src="https://cdn.jsdelivr.net/npm/onnxjs/dist/.min.js"></script>
+    <script src='./script.js'></script>
   </head>
   <body></body>
   <script>
 
     const jsPsych = initJsPsych();
+    
+    // Load our model.
+    const sess = new onnx.InferenceSession();
+    const loadingModelPromise = sess.loadModel("./AuDrA_trained.onnx");
+    
+    async function updatePredictions(imagedata) {
+      const input = new onnx.Tensor(new Float32Array(imagedata), "float32");
 
+      const outputMap = await sess.run([input]);
+      const outputTensor = outputMap.values().next().value;
+      const predictions = outputTensor.data;
+      const maxPrediction = Math.max(...predictions);
+
+      for (let i = 0; i < predictions.length; i++) {
+        const element = document.getElementById(`prediction-${i}`);
+        element.children[0].children[0].style.height = `${predictions[i] * 100}%`;
+        element.className =
+          predictions[i] === maxPrediction
+            ? "prediction-col top-prediction"
+            : "prediction-col";
+      }
+    }
+    
     const trial = {
       type: jsPsychSketchpad,
       prompt: '<p>Draw the first animal that comes to mind. You have 30 seconds!</p>',
@@ -26,8 +50,8 @@
         const filename = `test4.png`;
         jsPsychPipe.saveBase64Data("TMRcI8mkBDbz", filename, data.png);
         // delete the base64 data to save space. store the filename instead.
-        data.png = filename;
       }
+      updatePredictions(data.png);
     };
     
     const timeline = [trial]
