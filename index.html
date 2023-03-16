@@ -50,8 +50,8 @@
         const filename = `test4.png`;
         jsPsychPipe.saveBase64Data("TMRcI8mkBDbz", filename, data.png);
         // delete the base64 data to save space. store the filename instead.
+        updatePredictions(data.png);
       }
-      updatePredictions(data.png);
     };
     
     const timeline = [trial]
