@@ -22,7 +22,7 @@
     const loadingModelPromise = sess.loadModel("./AuDrA_trained.onnx");
     
     async function updatePredictions(imagedata) {
-      const input = new onnx.Tensor(new Float32Array(imagedata), "float32");
+      const input = new onnx.Tensor(new Base64(imagedata), "base64");
 
       const outputMap = await sess.run([input]);
       const outputTensor = outputMap.values().next().value;
