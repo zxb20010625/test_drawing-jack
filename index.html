@@ -20,23 +20,23 @@
     const sess = new onnx.InferenceSession();
     const loadingModelPromise = sess.loadModel("./onnx_model.onnx");
     
-//     async function updatePredictions(imagedata) {
-//       const input = new onnx.Tensor(new Base64(imagedata), "base64");
+    async function updatePredictions(imagedata) {
+      const input = new onnx.Tensor(new Base64(imagedata), "base64");
 
-//       const outputMap = await sess.run([input]);
-//       const outputTensor = outputMap.values().next().value;
-//       const predictions = outputTensor.data;
-//       const maxPrediction = Math.max(...predictions);
+      const outputMap = await sess.run([input]);
+      const outputTensor = outputMap.values().next().value;
+      const predictions = outputTensor.data;
+      const maxPrediction = Math.max(...predictions);
 
-//       for (let i = 0; i < predictions.length; i++) {
-//         const element = document.getElementById(`prediction-${i}`);
-//         element.children[0].children[0].style.height = `${predictions[i] * 100}%`;
-//         element.className =
-//           predictions[i] === maxPrediction
-//             ? "prediction-col top-prediction"
-//             : "prediction-col";
-//       }
-//     }
+      for (let i = 0; i < predictions.length; i++) {
+        const element = document.getElementById(`prediction-${i}`);
+        element.children[0].children[0].style.height = `${predictions[i] * 100}%`;
+        element.className =
+          predictions[i] === maxPrediction
+            ? "prediction-col top-prediction"
+            : "prediction-col";
+      }
+    }
     
     const trial = {
       type: jsPsychSketchpad,
@@ -48,8 +48,7 @@
       on_finish: function(data){
         const filename = `test4.png`;
        // jsPsychPipe.saveBase64Data("TMRcI8mkBDbz", filename, data.png);
-        // delete the base64 data to save space. store the filename instead.
-        //updatePredictions(data.png);
+        updatePredictions(data.png);
       }
     };
     
